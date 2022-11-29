@@ -29,8 +29,8 @@ export class CdkpipelineStack extends cdk.Stack {
 
     new CodePipeline(this, 'MyFirstPipeline', {
       pipelineName: 'MyPipeline',
-      codeBuildDefaults: {
-        buildEnvironment: {
+      codeBuildDefaults: {  
+        buildEnvironment: {      //this  is done for env sync up
           buildImage: LinuxBuildImage.STANDARD_5_0,
         },
         timeout: Duration.minutes(480),
@@ -38,7 +38,7 @@ export class CdkpipelineStack extends cdk.Stack {
       synth: new ShellStep('Synth',{
         input:CodePipelineSource.gitHub('piyush1008/cdkpipeline','main'),
         commands:[
-                  'npm install',
+                  'node --version',
                   'npm ci',
                   'npm run build',
                   'npx cdk synth']
