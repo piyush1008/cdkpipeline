@@ -10,6 +10,18 @@ import {
   CodePipelineSource,
   ManualApprovalStep,
 } from "aws-cdk-lib/pipelines";
+import {
+  Stage,
+  Stack,
+  Duration,
+  StackProps,
+  DefaultStackSynthesizer,
+} from "aws-cdk-lib";
+import {
+  BuildSpec,
+  LinuxBuildImage,
+  BuildEnvironmentVariableType,
+} from "aws-cdk-lib/aws-codebuild";
 
 export class CdkpipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -17,6 +29,12 @@ export class CdkpipelineStack extends cdk.Stack {
 
     new CodePipeline(this, 'MyFirstPipeline', {
       pipelineName: 'MyPipeline',
+      codeBuildDefaults: {
+        buildEnvironment: {
+          buildImage: LinuxBuildImage.STANDARD_5_0,
+        },
+        timeout: Duration.minutes(480),
+      },
       synth: new ShellStep('Synth',{
         input:CodePipelineSource.gitHub('piyush1008/cdkpipeline','main'),
         commands:[
